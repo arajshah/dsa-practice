@@ -64,6 +64,5 @@ br = BuildRules(rules)
 print(br.startBuild())
 print(br.buildTarget('bar.a'))
 print(br.buildTarget('bar.b'))
-print(br.buildTarget('foo.c'))
 
 
