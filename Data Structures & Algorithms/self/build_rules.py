@@ -7,6 +7,7 @@ class BuildRules:
         self.remaining = defaultdict(int)
         self.built = set()
         self.all_nodes = set()
+        self.ready = set()
 
         for dependent in rules:
             self.all_nodes.add(dependent)
@@ -17,13 +18,14 @@ class BuildRules:
                 self.remaining[dependent] += 1
                 self.all_nodes.add(dependency)
         
+        self.ready = set(node for node in self.all_nodes if self.remaining[node] == 0)
+
+        
     def startBuild(self):
         '''
         Returns a list of files that can be built initially
         '''
-        ans = list(node for node in self.all_nodes if self.remaining[node] == 0 and node not in self.built)
-        
-        return ans
+        return list(self.ready)
 
 
     def buildTarget(self, target):
@@ -40,12 +42,14 @@ class BuildRules:
             raise ValueError("Target has unresolved dependencies. Target cannot be built")
 
         self.built.add(target)
+        self.ready.remove(target)
         ans = []
 
         for dependent in self.graph[target]:
             self.remaining[dependent] -= 1
             if self.remaining[dependent] == 0:
                 ans.append(dependent)
+                self.ready.add(dependent)
             
         return ans
 
