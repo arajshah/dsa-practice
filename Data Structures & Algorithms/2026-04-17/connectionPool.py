@@ -70,8 +70,8 @@ def test_basic_operations():
     pooled_connection.close()
 
 def test_pool_cannot_be_created_with_non_positive_max_num_connections():
-    assert_raises(lambda: ConnectionPool(0), "ValueError")
-    assert_raises(lambda: ConnectionPool(-1), "ValueError")
+    assertRaises(lambda: ConnectionPool(0), "ValueError")
+    assertRaises(lambda: ConnectionPool(-1), "ValueError")
 
 def test_connections_are_lazily_created():
     c = ConnectionPool(2)
